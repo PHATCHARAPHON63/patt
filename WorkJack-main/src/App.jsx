@@ -158,7 +158,7 @@ function App() {
                         onClick={() =>
                           openDialog('A02-D01', 'รายละเอียดของ A02-D01')
                         }
-                        className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                        className="w-full h-full text-center  bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
                       >
                         A02-D01
                       </button>
@@ -277,7 +277,7 @@ function App() {
                         onClick={() =>
                           openDialog('A01-D01', 'รายละเอียดของ A01-D01')
                         }
-                        className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                        className="w-full h-full  text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
                       >
                         A01-D01
                       </button>
@@ -2156,28 +2156,64 @@ function App() {
               <div className="flex w-[200px]">
                 <div className="flex-1 text-[10px] p-1"></div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-t-gray-500 border-l-gray-500">
-                  C02
+                <button
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B06
+                    </button>
                 </div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-l-gray-500 border-t-gray-500 border-r-gray-500">
-                  ชั้น
+                <button
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      ชั้น
+                    </button>
                 </div>
               </div>
               <div className="flex w-[200px]">
                 <div className="flex-1 text-[10px] p-1 bg-[red]"></div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-t-gray-500 border-l-gray-500">
-                  B06-C01
+                <button
+                      onClick={() =>
+                        openDialog('B06-C01', 'รายละเอียดของ B06-C01')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B06-C01
+                    </button>
                 </div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-l-gray-500 border-t-gray-500 border-r-gray-500">
-                  B06-C02
+                <button
+                      onClick={() =>
+                        openDialog('B06-C02', 'รายละเอียดของ B06-C02')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B06-C02
+                    </button>
                 </div>
               </div>
               <div className="flex w-[200px]">
                 <div className="flex-1 text-[10px] p-1 bg-[red]"></div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-t-gray-500 border-l-gray-500">
-                  B06-B01
+                <button
+                      onClick={() =>
+                        openDialog('B06-B02', 'รายละเอียดของ B06-B02')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B06-B02
+                    </button>
                 </div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-l-gray-500 border-t-gray-500 border-r-gray-500">
-                  B06-B02
+                <button
+                      onClick={() =>
+                        openDialog('B06-B02', 'รายละเอียดของ B06-B02')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B06-B02
+                    </button>
                 </div>
               </div>
               <div className="flex w-[200px]">
@@ -2186,7 +2222,14 @@ function App() {
                   บนโต๊ะ
                 </div>
                 <div className="flex-1 text-[10px] p-1 bg-[red] text-start">
-                  B01-A06
+                <button
+                      onClick={() =>
+                        openDialog('B06-A01', 'รายละเอียดของ B06-A01')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B06-A01
+                    </button>
                 </div>
               </div>
               <div className="flex w-[200px]">
@@ -2200,37 +2243,84 @@ function App() {
               <div className="flex w-[200px]">
                 <div className="flex-1 text-[10px] p-1"></div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-t-gray-500 border-l-gray-500">
-                  C02
+                <button
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B05
+                    </button>
                 </div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-l-gray-500 border-t-gray-500 border-r-gray-500">
-                  ชั้น
+                <button
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                    ชั้น
+                    </button>
                 </div>
               </div>
               <div className="flex w-[200px]">
                 <div className="flex-1 text-[10px] p-1 bg-[red]"></div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-t-gray-500 border-l-gray-500">
-                  B06-C01
+                <button
+                      onClick={() =>
+                        openDialog('B05-A01', 'รายละเอียดของ B05-A01')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B05-A01
+                    </button>
                 </div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-l-gray-500 border-t-gray-500 border-r-gray-500">
-                  B06-C02
+                <button
+                      onClick={() =>
+                        openDialog('B05-C02', 'รายละเอียดของ B05-C02')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B05-C02
+                    </button>
                 </div>
               </div>
               <div className="flex w-[200px]">
                 <div className="flex-1 text-[10px] p-1 bg-[red]"></div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-t-gray-500 border-l-gray-500">
-                  B06-B01
+                <button
+                      onClick={() =>
+                        openDialog('B05-B02', 'รายละเอียดของ B05-B02')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B05-B01
+                    </button>
                 </div>
                 <div className="flex-1 text-[10px] p-1 border border-gray-300 border-b-gray-500 border-l-gray-500 border-t-gray-500 border-r-gray-500">
-                  B06-B02
+                <button
+                      onClick={() =>
+                        openDialog('B05-B02', 'รายละเอียดของ B05-B02')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B05-B02
+                    </button>
                 </div>
               </div>
               <div className="flex w-[200px]">
                 <div className="flex-1 text-[10px] p-1 bg-[red]"></div>
                 <div className="flex-1 text-[10px] p-1 bg-[red] text-end">
-                  บนโต๊ะ
+                <button
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      บนโต๊ะ
+                    </button>
                 </div>
                 <div className="flex-1 text-[10px] p-1 bg-[red] text-start">
-                  B01-A06
+                <button
+                      onClick={() =>
+                        openDialog('B05-A01', 'รายละเอียดของ B05-A01')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B05-A01
+                    </button>
                 </div>
               </div>
               <div className="flex w-[200px]">
@@ -2422,7 +2512,14 @@ function App() {
                     </button>
                     </div>
                     <div className="flex-[0.06] text-xs border border-gray-300 border-b-gray-500 border-l-gray-500">
-                      B01-A01
+                    <button
+                      onClick={() =>
+                        openDialog('B01-A04', 'รายละเอียดของ B01-A04')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B01-A04
+                    </button>
                     </div>
                     <div className="flex-[0.06] text-xs border border-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-500">
                       1
@@ -2432,27 +2529,49 @@ function App() {
                 <div className="mt-[13rem] origin-top-left rotate-90 translate-y-[-100%] translate-x-[30px] w-[calc(100vh-1rem)] flex flex-col">
                   <div className="flex">
                     <div className="flex-[0.06] text-xs border border-white border-t-gray-500 border-l-gray-500 border-b-gray-500">
-                      B04
+                    <button
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B03
+                    </button>
                     </div>
                     <div className="flex-[0.06] text-xs border border-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-500 border-t-gray-500">
+                    <button
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
                       ชั้น
+                    </button>
                     </div>
                   </div>
                   <div className="flex h-[35px]">
                     <div className="flex-[0.06] text-xs border border-gray-300 border-b-gray-500 border-l-gray-500">
-                      B01-D01
+                    <button
+                      onClick={() =>
+                        openDialog('B01-A04', 'รายละเอียดของ B01-A04')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B03-A01
+                    </button>
                     </div>
                     <div className="flex-[0.06] text-xs border border-gray-300 border-b-gray-500 border-l-gray-500">
-                      B01-D02
+                    <button
+                      onClick={() =>
+                        openDialog('B01-A04', 'รายละเอียดของ B01-A04')
+                      }
+                      className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                    >
+                      B03-A01
+                    </button>
                     </div>
                   </div>
                   <div className="flex h-[35px]">
-                    <div className="flex-[0.06] text-xs border border-gray-300 border-b-gray-500 border-l-gray-500">
+                    {/* <div className="flex-[0.06] text-xs border border-gray-300 border-b-gray-500 border-l-gray-500">
                       B01-C04
                     </div>
                     <div className="flex-[0.06] text-xs border border-gray-300 border-b-gray-500 border-l-gray-500">
                       B01-C03
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
