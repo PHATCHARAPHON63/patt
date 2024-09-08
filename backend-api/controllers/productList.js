@@ -1,5 +1,32 @@
 const ProductList = require('../models/product')
 
+// ค้นหาสินค้าด้วย code
+exports.searchProductByCode = async (req, res) => {
+  console.log('searchProductByCode function called');
+  try {
+    const { code } = req.query;
+    console.log('Searching for code:', code);
+    
+    if (!code) {
+      return res.status(400).json({ message: 'Code parameter is required' });
+    }
+
+    const product = await ProductList.findOne({ code });
+    
+    if (!product) {
+      console.log('Product not found');
+      return res.status(404).json({ message: 'ไม่พบสินค้า' });
+    }
+    
+    console.log('Product found:', product);
+    res.json(product);
+  } catch (error) {
+    console.error('Error in searchProductByCode:', error);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการค้นหาสินค้า', error: error.message });
+  }
+};
+
+
 exports.getAllProductLists = async (req, res) => {
     try {
       console.log('Fetching all product lists...');
