@@ -1,10 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
 import bodyParser from 'body-parser';
 import { swaggerUi, swaggerSpec } from './config/swaggerConfig.js';
 import dotenv from 'dotenv';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { readdirSync } from 'fs';
@@ -25,13 +23,13 @@ app.use(bodyParser.json({ limit: '1000MB' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-// Serve static files from the React app (now in 'public/dist')
-app.use(express.static(path.join(__dirname, 'public', 'dist')));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Load routes
-readdirSync('./routes').forEach((file) => {
+readdirSync('./server/routes').forEach((file) => {
   if (file.endsWith('.js')) {
     import(`./routes/${file}`).then((module) => {
       app.use('/', module.default);
@@ -42,7 +40,7 @@ readdirSync('./routes').forEach((file) => {
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
 const port = process.env.PORT || 3301;
