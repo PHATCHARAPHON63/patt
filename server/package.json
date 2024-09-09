@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "build": "cd client && npm install && npm run build && cd .. && npm install",
+    "build": "npm install",
+
     "dev": "nodemon server/index.js"
   },
   "dependencies": {
