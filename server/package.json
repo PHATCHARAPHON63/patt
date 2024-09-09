@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "build": "npm install",
-
-    "dev": "nodemon server/index.js"
-  },
+  "start": "node index.js",
+  "build": "npm install",
+  "dev": "nodemon index.js"
+},
   "dependencies": {
     "express": "^4.19.2",
     "cors": "^2.8.5",
@@ -22,6 +21,6 @@
     "nodemon": "^3.0.2"
   },
   "engines": {
-    "node": ">=16.20.1"
-  }
+  "node": "20.15.1"
+}
 }
