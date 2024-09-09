@@ -1,7 +1,7 @@
-const ProductList = require('../models/product')
+import ProductList from '../models/product.js';
 
 // ค้นหาสินค้าด้วย code
-exports.searchProductByCode = async (req, res) => {
+export const searchProductByCode = async (req, res) => {
   console.log('searchProductByCode function called');
   try {
     const { code } = req.query;
@@ -25,7 +25,7 @@ exports.searchProductByCode = async (req, res) => {
     res.status(500).json({ message: 'เกิดข้อผิดพลาดในการค้นหาสินค้า', error: error.message });
   }
 };
-  exports.getProductListByPos = async (req, res) => {
+export const getProductListByPos = async (req, res) => {
     try {
       const { pos } = req.body;
       const productList = await ProductList.findOne({ pos }).lean();
@@ -52,7 +52,7 @@ exports.searchProductByCode = async (req, res) => {
     }
   };
 
-exports.getAllProductLists = async (req, res) => {
+  export const getAllProductLists = async (req, res) => {
     try {
       console.log('Fetching all product lists...');
       const productLists = await ProductList.find().lean();
@@ -75,7 +75,7 @@ exports.getAllProductLists = async (req, res) => {
     }
   };
 
-  exports.getProductListByCode = async (req, res) => {
+  export const getProductListByCode = async (req, res) => {
     try {
       const { code } = req.body;
       const productList = await ProductList.findOne({ code }).lean();

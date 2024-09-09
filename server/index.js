@@ -30,7 +30,8 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Load routes
-readdirSync('./routes').forEach((file) => {
+const routesDir = path.join(__dirname, 'routes');
+readdirSync(routesDir).forEach((file) => {
   if (file.endsWith('.js')) {
     import(`./routes/${file}`).then((module) => {
       app.use('/', module.default);

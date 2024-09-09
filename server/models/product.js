@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const productListSchema = new mongoose.Schema({
   position: {
@@ -20,4 +20,4 @@ const productListSchema = new mongoose.Schema({
 
 const ProductList = mongoose.model('ProductList', productListSchema)
 
-module.exports = ProductList
+export default ProductList;
