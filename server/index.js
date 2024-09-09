@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { swaggerUi, swaggerSpec } from './config/swaggerConfig.js';
+
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -29,7 +30,7 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Load routes
-readdirSync('./server/routes').forEach((file) => {
+readdirSync('./routes').forEach((file) => {
   if (file.endsWith('.js')) {
     import(`./routes/${file}`).then((module) => {
       app.use('/', module.default);
