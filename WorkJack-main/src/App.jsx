@@ -1,157 +1,209 @@
-import React, { useState, useRef, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import Dialog from "./components/Dialog";
-import { getProductListByPos, searchProductByCode } from "../src/components/function/auth";
-import { Search } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react'
+import './App.css'
+import {
+  getProductListByPos,
+  searchProductByCode,
+  getProductListByCode,
+} from '../src/components/function/auth'
+import { Search, X } from 'lucide-react'
 
+// Dialog Component
+const Dialog = ({ isOpen, onClose, title, content }) => {
+  const dialogRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dialogRef.current && !dialogRef.current.contains(event.target)) {
+        onClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isOpen, onClose])
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+      <div ref={dialogRef} className="bg-white rounded-lg p-6 max-w-md w-full">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">{title}</h2>
+          
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <X size={24} />
+          </button>
+        </div>
+        <div>{content}</div>
+      </div>
+    </div>
+  );
+}
 
 function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [dialogContent, setDialogContent] = useState({
-    title: "",
-    content: "",
-  });
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResult, setSearchResult] = useState(null);
-  const [highlightedPos, setHighlightedPos] = useState('');
+    title: '',
+    content: '',
+  })
 
-  const handleOpenDialog = () => setIsDialogOpen(true);
-  const handleCloseDialog = () => setIsDialogOpen(false);
+  const getPositionClassName = (pos) => {
+    if (highlightedPos) {
+      return `py-1 px-1 ${highlightedPos === pos ? 'bg-yellow-400' : ''}`
+    }
+    return 'py-1 px-1'
+  }
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchResult, setSearchResult] = useState(null)
+  const [highlightedPos, setHighlightedPos] = useState('')
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  const handleSearch = async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const result = await getProductListByCode(searchTerm)
+      setSearchResult(result)
+      if (result && result.pos) {
+        setHighlightedPos(result.pos)
+        scrollToPosition(result.pos)
+      } else {
+        setHighlightedPos('')
+        setError('ไม่พบสินค้าที่ค้นหา')
+      }
+    } catch (error) {
+      console.error('Error searching for product:', error)
+      setError(error.message || 'เกิดข้อผิดพลาดในการค้นหา')
+      setSearchResult(null)
+      setHighlightedPos('')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const scrollToPosition = (pos) => {
+    const element = document.getElementById(pos)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
+  const showSearchResult = () => {
+    if (searchResult) {
+      const content = (
+        <ul className="list-disc list-inside">
+
+          <li>รหัสสินค้า: {searchResult.code}</li>
+          <br />
+          <li>ชื่อสินค้า: {searchResult.product_list}</li>
+          <br />
+          <li>จำนวน: {searchResult.quantity}</li>
+          <br />
+          <li>ตำแหน่ง: {searchResult.pos}</li>
+        </ul>
+      )
+      setDialogContent({ title: 'ผลการค้นหา', content })
+      setIsDialogOpen(true)
+    }
+  }
 
   const openDialog = async (pos, title) => {
     try {
-      const productData = await getProductListByPos(pos);
-
-      console.log("Data received from API:", productData);
-
+      const productData = await getProductListByPos(pos)
+      console.log('Data received from API:', productData)
       const contentItems = [
-        { label: "รหัสสินค้า", value: productData.code },
-        { label: "ชื่อสินค้า", value: productData.product_list },
-        { label: "จำนวน", value: productData.quantity },
-        { label: "ตำแหน่ง", value: productData.pos },
-      ];
-
+        { label: 'รหัสสินค้า', value: productData.code },
+        { label: 'ชื่อสินค้า', value: productData.product_list },
+        { label: 'จำนวน', value: productData.quantity },
+        { label: 'ตำแหน่ง', value: productData.pos },
+      ]
       const content = (
         <ul>
           {contentItems.map((item, index) => (
             <li key={index}>
-              {item.label}: {item.value || "ไม่ระบุ"}
+              {item.label}: {item.value || 'ไม่ระบุ'}
             </li>
           ))}
         </ul>
-      );
-
-      setDialogContent({ title, content });
-      setDialogOpen(true);
+      )
+      setDialogContent({ title, content })
+      setIsDialogOpen(true)
     } catch (error) {
-      console.error("Error fetching product data:", error);
+      console.error('Error fetching product data:', error)
       setDialogContent({
-        title: "เกิดข้อผิดพลาด",
+        title: 'เกิดข้อผิดพลาด',
         content: `ไม่สามารถดึงข้อมูลสินค้าได้: ${error.message}`,
-      });
-      setDialogOpen(true);
+      })
+      setIsDialogOpen(true)
     }
-  };
-
-  const [isLoading, setIsLoading] = useState(false);
-const [error, setError] = useState(null);
-
-const handleSearch = async () => {
-  setIsLoading(true);
-  setError(null);
-  try {
-    const result = await searchProductByCode(searchTerm);
-    setSearchResult(result);
-    if (result && result.pos) {
-      setHighlightedPos(result.pos);
-      scrollToPosition(result.pos);
-    } else {
-      setHighlightedPos('');
-      setError('ไม่พบสินค้าที่ค้นหา');
-    }
-  } catch (error) {
-    console.error("Error searching for product:", error);
-    setError(error.message || 'เกิดข้อผิดพลาดในการค้นหา');
-    setSearchResult(null);
-    setHighlightedPos('');
-  } finally {
-    setIsLoading(false);
   }
-};
-
-  const scrollToPosition = (pos) => {
-    const element = document.getElementById(pos);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
-
-  // ฟังก์ชันสำหรับสร้าง div ของแต่ละตำแหน่ง
-  const renderPositionDiv = (pos) => {
-    const isHighlighted = pos === highlightedPos;
-    return (
-      <div
-        id={pos}
-        key={pos}
-        className={`p-2 m-1 border ${isHighlighted ? 'bg-red-500 text-white' : ''}`}
-      >
-        <button
-          onClick={() => openDialog(pos, `รายละเอียดของ ${pos}`)}
-          className={`w-full h-full text-center bg-transparent ${isHighlighted ? 'text-white' : 'text-black'} font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300`}
-        >
-          {pos}
-        </button>
-      </div>
-    );
-  };
-
 
   return (
     <>
-     
-
-     <div className="fixed top-0 left-0 w-full bg-white shadow-md p-4 z-50">
-        <div className="flex items-center max-w-3xl mx-auto">
-          <input
-            type="text"
-            placeholder="ค้นหา..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className="flex-grow p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+      <div className="fixed top-0 left-0 w-full bg-white shadow-md p-4 z-50">
+        <div className="max-w-3xl mx-auto flex items-center space-x-4">
+          <div className="relative flex-shrink-0">
+            <input
+              type="text"
+              placeholder="ค้นหาสินค้า..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="w-64 px-8 py-2 border rounded focus:ring focus:ring-blue-300"
+            />
+            <Search
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={16}
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
           <button
             onClick={handleSearch}
-            className="bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
           >
-            <Search size={20} />
+            ค้นหา
           </button>
+          {searchResult && (
+            <button
+              onClick={showSearchResult}
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded whitespace-nowrap"
+            >
+              แสดงข้อมูล
+            </button>
+          )}
+        </div>
+        <div className="mt-2 flex items-center justify-between max-w-3xl mx-auto">
+          {isLoading && <span className="text-gray-600">กำลังค้นหา...</span>}
+          {error && <span className="text-red-500">{error}</span>}
         </div>
       </div>
 
-      {searchResult && (
-        <div className="fixed top-16 left-0 w-full bg-yellow-100 p-4 z-40">
-          <h3 className="font-bold">ผลการค้นหา:</h3>
-          <p>รหัสสินค้า: {searchResult.code}</p>
-          <p>ชื่อสินค้า: {searchResult.product_list}</p>
-          <p>จำนวน: {searchResult.quantity}</p>
-          <p>ตำแหน่ง: {searchResult.pos}</p>
-        </div>
-      )}
-      <div className="overflow-auto pt-20"> 
+      <div className="overflow-auto pt-20">
         <div className="flex items-start space-x-8 min-w-[1200px] justify-between pt-[5rem]">
           <div className="flex-shrink-0  flex-row flex space-x-8">
             <div className="border-4 border-yellow-400 rounded-lg p-4 bg-yellow-100">
@@ -1336,14 +1388,14 @@ const handleSearch = async () => {
                         </button>
                       </div>
                       <div className="py-1 px-1 bg-blue-200">
-                        <button
-                          onClick={() =>
-                            openDialog('D05-A04', 'รายละเอียดของ D05-A04')
-                          }
-                          className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                        <div
+                          id="D05-A04"
+                          className={getPositionClassName('D05-A04')}
                         >
-                          D05-A04
-                        </button>
+                          <button className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300">
+                            D05-A04
+                          </button>
+                        </div>
                       </div>
                       <div className="py-1 px-1 bg-blue-200">
                         <button
@@ -2090,15 +2142,16 @@ const handleSearch = async () => {
                         C02-A03
                       </button>
                     </div>
+
                     <div className="py-1 px-1 bg-lime-400">
-                      <button
-                        onClick={() =>
-                          openDialog('C02-A02', 'รายละเอียดของ C02-A02')
-                        }
-                        className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                      <div
+                        id="C02-A02"
+                        className={getPositionClassName('C02-A02')}
                       >
-                        C02-A02
-                      </button>
+                        <button className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300">
+                          C02-A02
+                        </button>
+                      </div>
                     </div>
                     <div className="py-1 px-1 bg-lime-400 text-center">
                       <button
@@ -2502,14 +2555,14 @@ const handleSearch = async () => {
                             </button>
                           </div>
                           <div className="py-1 px-1 bg-blue-200">
-                            <button
-                              onClick={() =>
-                                openDialog('B06-C02', 'รายละเอียดของ B06-C02')
-                              }
-                              className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                            <div
+                              id="B06-A02"
+                              className={getPositionClassName('B06-A02')}
                             >
-                              B06-C02
-                            </button>
+                              <button className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300">
+                                B06-A02
+                              </button>
+                            </div>
                           </div>
                         </div>
                         <div className="grid grid-cols-[repeat(2,75px)] gap-0.5 text-xs px-1 py-0.5 bg-black">
@@ -2536,14 +2589,14 @@ const handleSearch = async () => {
                         </div>
                         <div className="grid grid-cols-[repeat(,150px)] gap-0.5 text-xs px-1 py-0.5 bg-black">
                           <div className="py-1 px-1 bg-blue-200">
-                            <button
-                              onClick={() =>
-                                openDialog('B06-A01', 'รายละเอียดของ B06-A01')
-                              }
-                              className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
+                            <div
+                              id="B06-A01"
+                              className={getPositionClassName('B06-A01')}
                             >
-                              บนโต๊ะ B06-A01
-                            </button>
+                              <button className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300">
+                                บนโต๊ะ B06-A01
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2566,25 +2619,22 @@ const handleSearch = async () => {
                             </button>
                           </div>
                         </div>
-                        <div className="grid grid-cols-[repeat(2,75px)] gap-0.5 text-xs px-1 py-0.5 bg-black">
-                          <div className="py-1 px-1 bg-blue-200">
-                            <button
-                              onClick={() =>
-                                openDialog('B05-A01', 'รายละเอียดของ B05-A01')
-                              }
-                              className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
-                            >
+                        <div className="grid grid-cols-[repeat(2,75px)] gap-0.5 text-xs px-1 py-0.5 bg-blue-200">
+                          <div
+                            id="B05-A01"
+                            className={getPositionClassName('B05-A01')}
+                          >
+                            <button className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300">
                               B05-A01
                             </button>
                           </div>
-                          <div className="py-1 px-1 bg-blue-200">
-                            <button
-                              onClick={() =>
-                                openDialog('B05-C02', 'รายละเอียดของ B05-C02')
-                              }
-                              className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300"
-                            >
-                              B05-C02
+
+                          <div
+                            id="B05-A02"
+                            className={getPositionClassName('B05-A02')}
+                          >
+                            <button className="w-full h-full text-center bg-transparent text-black font-semibold focus:outline-none hover:underline cursor-pointer border-[0px] border-yellow-300">
+                              B05-A02
                             </button>
                           </div>
                         </div>
@@ -2675,6 +2725,12 @@ const handleSearch = async () => {
           </div>
         </div>
       </div>
+      <Dialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        title={dialogContent.title}
+        content={dialogContent.content}
+      />
     </>
   )
 }

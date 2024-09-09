@@ -25,7 +25,32 @@ exports.searchProductByCode = async (req, res) => {
     res.status(500).json({ message: 'เกิดข้อผิดพลาดในการค้นหาสินค้า', error: error.message });
   }
 };
-
+  exports.getProductListByPos = async (req, res) => {
+    try {
+      const { pos } = req.body;
+      const productList = await ProductList.findOne({ pos }).lean();
+  
+      if (!productList) {
+        return res.status(404).json({ message: 'Product not found', pos });
+      }
+  
+      // เพิ่มการตรวจสอบและกำหนดค่าเริ่มต้น
+      const result = {
+        _id: productList._id,
+        position: productList.position || pos,
+        pos: productList.pos || pos,
+        code: productList.code || 'ไม่ระบุ',
+        product_list: productList.product_list || 'ไม่ระบุ',
+        quantity: productList.quantity !== undefined ? productList.quantity : 'ไม่ระบุ'
+      };
+  
+      console.log('Data to be sent:', result);
+      res.status(200).json(result);
+    } catch (error) {
+      console.error('Error fetching product list:', error);
+      res.status(500).json({ message: 'Error fetching product list', error: error.message });
+    }
+  };
 
 exports.getAllProductLists = async (req, res) => {
     try {
@@ -50,10 +75,10 @@ exports.getAllProductLists = async (req, res) => {
     }
   };
 
-  exports.getProductListByPos = async (req, res) => {
+  exports.getProductListByCode = async (req, res) => {
     try {
-      const { pos } = req.body;
-      const productList = await ProductList.findOne({ pos }).lean();
+      const { code } = req.body;
+      const productList = await ProductList.findOne({ code }).lean();
   
       if (!productList) {
         return res.status(404).json({ message: 'Product not found', pos });

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getAllProductLists,getProductListByPos,searchProductByCode } = require('../controllers/productList');
+const { getAllProductLists,getProductListByPos,searchProductByCode,getProductListByCode  } = require('../controllers/productList');
 router.get('/search', searchProductByCode);
 
 
@@ -97,5 +97,52 @@ router.get('/getAllProductLists', getAllProductLists);
 
 router.post('/getProductListByPos', getProductListByPos);
 
+/**
+ * @swagger
+ * /getProductListByCode:
+ *   post:
+ *     summary: Get product list by position
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - pos
+ *             properties:
+ *               pos:
+ *                 type: string
+ *                 description: Position of the product
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 position:
+ *                   type: string
+ *                 code:
+ *                   type: string
+ *                 product_list:
+ *                   type: string
+ *                 quantity:
+ *                   type: number
+ *                 pos:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Server error
+ */
+
+router.post('/getProductListByCode', getProductListByCode );
 
 module.exports = router;

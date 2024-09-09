@@ -27,9 +27,22 @@ export const searchProductByCode = async (code) => {
   }
 };
 
+
+
 export const getProductListByPos = async (pos) => {
     try {
       const response = await axios.post(`${baseUrl}/getProductListByPos`, { pos });
+      console.log('API Response:', response.data); // เพิ่มบรรทัดนี้
+      return response.data;
+    } catch (error) {
+      console.error('API Error:', error.response ? error.response.data : error.message);
+      throw error;
+    }
+  };
+
+  export const getProductListByCode = async (code) => {
+    try {
+      const response = await axios.post(`${baseUrl}/getProductListByCode`, { code });
       console.log('API Response:', response.data); // เพิ่มบรรทัดนี้
       return response.data;
     } catch (error) {
